@@ -13,5 +13,17 @@ newdata.info()
 
 merged = pd.merge(newdata, regions, on='NOC', how='left')
 
-gold = merged[(merged.Medal == 'Gold')]
-gold.head()
+summer = merged[merged.Season != "Winter"]
+summer.info()
+
+goldsum = summer[(summer.Medal == 'Gold')]
+
+import seaborn as sns
+sns.heatmap(goldsum.isnull(), cbar=False)
+
+imp_col = ['Age','Height','Weight']
+for col in imp_col:
+    goldsum[col] = goldsum[col].fillna(np.mean(goldsum[col]))
+    goldsum[col] = np.round(goldsum[col],1)
+    
+sns.heatmap(goldsum.isnull(), cbar=False)
